@@ -1,0 +1,311 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>NYC Event Hub - Profile</title>
+    <style>
+        /* Basic styles for the page */
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+            color: #333;
+        }
+
+        /* Navbar Styles */
+        .navbar {
+            background-color: #022457;
+            color: white;
+            display: flex;
+            justify-content: space-between;
+            padding: 10px 20px;
+            align-items: center;
+            position: sticky;
+            top: 0;
+            z-index: 1000;
+        }
+
+        .navbar .logo {
+            font-size: 1.5em;
+            font-weight: bold;
+        }
+
+        .navbar .nav-links {
+            display: flex;
+            gap: 20px;
+        }
+
+        .navbar .nav-links a {
+            color: white;
+            text-decoration: none;
+            padding: 8px 16px;
+            border-radius: 5px;
+            transition: background-color 0.3s;
+        }
+
+        .navbar .nav-links a:hover {
+            background-color: #047df6;
+        }
+
+        .navbar .auth-buttons a {
+            color: white;
+            text-decoration: none;
+            background-color: #ff8c00;
+            padding: 10px 20px;
+            border-radius: 5px;
+            margin-left: 20px;
+        }
+
+        #logoutButton {
+            color: black;
+            text-decoration: none;
+            background-color: #ff8c00;
+            padding: 5px 10px;
+            border-radius: 5px;
+            margin-left: 25px;
+            cursor: pointer;
+        }
+
+        /* Header Style */
+        .header {
+            background-color: #075aad;
+            color: white;
+            padding: 10px;
+            text-align: center;
+            position: relative;
+            margin-top: 5px;
+        }
+
+        /* Content Styling */
+        .content {
+            display: flex;
+            justify-content: space-around;
+            padding: 30px;
+        }
+
+        .content .card {
+            width: 40%;
+            margin-bottom: 7%;
+            background-color: white;
+            padding: 20px;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            border-radius: 5px;
+        }
+
+        .update-btn {
+            background-color: #ff8c00;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 5px;
+            cursor: pointer;
+            margin-top: 10px;
+        }
+
+        .update-btn:hover {
+            background-color: #f39c12;
+        }
+
+        /* Popup Form Styles */
+        .popup-form {
+            display: none;
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: rgba(0, 0, 0, 0.5);
+            justify-content: center;
+            align-items: center;
+        }
+
+        .form-container {
+            background-color: white;
+            padding: 20px;
+            border-radius: 5px;
+            width: 300px;
+        }
+
+        .form-container input {
+            width: 100%;
+            padding: 8px;
+            margin: 10px 0;
+            border-radius: 5px;
+            border: 1px solid #ccc;
+        }
+
+        .form-container button {
+            background-color: #075aad;
+            color: white;
+            padding: 10px;
+            width: 100%;
+            border: none;
+            border-radius: 5px;
+            cursor: pointer;
+        }
+
+        .form-container button:hover {
+            background-color: #047df6;
+        }
+
+        footer {
+            background-color: #022457;
+            color: white;
+            text-align: center;
+            position: fixed;
+            bottom: 0;
+            width: 100%;
+        }
+    </style>
+</head>
+<body>
+
+    <!-- Top Navbar with Login and Register -->
+    <div class="navbar">
+        <div class="logo">NYC Event Hub</div>
+        <div class="nav-links">
+            <a href="index.html">Home</a>
+            <a href="profile.html">Profile</a>
+            <a href="contact.html">Contact</a>
+            <a href="events.html">Events</a>
+        </div>
+        <div class="auth-buttons" id="authButtons">
+            <a href="/login.html">Login</a>
+            <a href="/register.html">Sign up</a>
+        </div>
+        <div class="user-info" id="userInfo" style="display: none;">
+            <span id="usernameDisplay" style="margin-top: 6px;"></span>
+            <a href="javascript:void(0);" id="logoutButton">Logout</a>
+        </div>
+    </div>
+
+    <!-- Header with Welcome Message -->
+    <div class="header">
+        <h1>Welcome to Your Profile</h1>
+    </div>
+
+    <!-- User Profile Content -->
+    <div class="content">
+        <div class="card">
+            <h2>User Information</h2>
+            <p><strong>Name:</strong> <span id="userName">Monirul Mahmud</span></p>
+            <p><strong>Email:</strong> <span  id="userEmail">user@gmail.com</span></p>
+            <button class="update-btn" id="updateBtn" style="color: #022457;">Update Info</button>
+        </div>
+        <div class="card">
+            <h2>Admin Contact</h2>
+            <p>If you have any issues, feel free to contact the admin:</p>
+            <p><strong>Email:</strong> admin@nyceventhub.com</p>
+            <p><strong>Phone:</strong> 987-654-3210</p>
+        </div>
+    </div>
+
+    <!-- Popup Form to Update Information -->
+    <div class="popup-form" id="popupForm">
+        <div class="form-container">
+            <h3>Update Your Information</h3>
+            <label for="name">Name</label>
+            <input type="text" id="name" placeholder="Enter your name">
+            <label for="email">Email</label>
+            <input type="email" id="email" placeholder="Enter your email">
+            <button id="submitUpdateBtn">Submit</button>
+        </div>
+    </div>
+
+    <footer>
+        <p>&copy; 2024 NYC Event Hub | All rights reserved</p>
+    </footer>
+
+    <script>
+
+
+
+        // Get cookie value
+        function getCookie(name) {
+            const cookieArr = document.cookie.split(';');
+            for (let i = 0; i < cookieArr.length; i++) {
+                let cookie = cookieArr[i].trim();
+                if (cookie.startsWith(name + '=')) {
+                    return decodeURIComponent(cookie.substring(name.length + 1));
+                }
+            }
+            return null;
+        }
+    
+        // Show user info if logged in
+        const userEmail = getCookie('userEmail');
+        const authButtons = document.getElementById('authButtons');
+        const userInfo = document.getElementById('userInfo');
+        const usernameDisplay = document.getElementById('usernameDisplay');
+    
+        if (userEmail) {
+            const username = userEmail.split('@')[0];
+            usernameDisplay.textContent = `Welcome, ${username}!`;
+            authButtons.style.display = 'none';
+            userInfo.style.display = 'flex';
+        }
+    
+            const username = getCookie('username');
+            const email = getCookie('email');
+            if (username && userEmail) {
+                
+                usernameDisplay.textContent = `Hello, ${username}`;
+                userName.textContent = username;
+                userEmail.textContent = userEmail;
+            } 
+    
+            
+    
+    
+        // Logout functionality
+        const logoutButton = document.getElementById('logoutButton');
+        logoutButton.addEventListener('click', function () {
+            document.cookie = 'userEmail=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            location.reload(); // Refresh to update UI
+        });
+    
+        
+    
+        // Handle logout
+        document.getElementById('logoutButton').addEventListener('click', function() {
+            document.cookie = 'username=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            document.cookie = 'email=; expires=Thu, 01 Jan 1970 00:00:00 UTC; path=/;';
+            window.location.href = '/index.html';
+        });
+    
+        // Show the update form
+        document.getElementById('updateBtn').addEventListener('click', function() {
+            document.getElementById('popupForm').style.display = 'flex';
+        });
+    
+        // Handle profile update
+        document.getElementById('submitUpdateBtn').addEventListener('click', function() {
+            const updatedName = document.getElementById('name').value;
+            const updatedEmail = document.getElementById('email').value;
+    
+            if (updatedName && updatedEmail) {
+                document.getElementById('userName').textContent = updatedName;
+                document.getElementById('userEmail').textContent = updatedEmail;
+                document.cookie = `username=${updatedName}; path=/;`;
+                document.cookie = `email=${updatedEmail}; path=/;`;
+                document.getElementById('popupForm').style.display = 'none';
+                alert('Profile updated successfully!');
+            } else {
+                alert('Please fill out all fields.');
+            }
+        });
+    
+        // Close the popup form
+        document.getElementById('popupForm').addEventListener('click', function(event) {
+            if (event.target === this) {
+                this.style.display = 'none';
+            }
+        });
+
+        
+
+
+    </script>
+</body>
+</html>
